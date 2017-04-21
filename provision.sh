@@ -3,12 +3,11 @@ export DEBIAN_FRONTEND=noninteractive
 
 sudo aptitude update -q
 
-# Force a blank root password for mysql
-echo "mysql-server mysql-server/root_password password " | debconf-set-selections
-echo "mysql-server mysql-server/root_password_again password " | debconf-set-selections
-
 # Install mysql, nginx, php5-fpm
-sudo aptitude install -q -y -f mysql-server mysql-client nginx php5-fpm
+sudo add-apt-repository ppa:eugenesan/ppa
+sudo aptitude update -q
+
+sudo aptitude install -q -y -f nginx php5-fpm
 
 # Install commonly used php packages
 sudo aptitude install -q -y -f php5-mysql php5-curl php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-memcached php5-ming php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl php5-xcache
@@ -95,8 +94,6 @@ sudo touch /usr/share/nginx/html/info.php
 sudo cat >> /usr/share/nginx/html/info.php <<'EOF'
 <?php phpinfo(); ?>
 EOF
-
-sudo aptitude install -q -y -f phpmyadmin
 
 sudo service nginx restart
 
